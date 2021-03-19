@@ -51,13 +51,27 @@ def play(string):
             out.append((False, UNIT * 3))
         out.append((False, UNIT * 7))
 
-    for play, duration in out:
-        if play: 
-            winsound.Beep(FREQ, duration)
-        else:
-            sleep(duration//1000)
-
+    return out
 
 if __name__ == "__main__":
     x = convert_text_to_morse("tämä on testi")
-    play(x)
+    out = play(x)
+    import wave, struct, random
+    obj = wave.open("test.wav", "w")
+    obj.setnchannels(1)
+    obj.setsampwidth(2)
+    obj.setframerate(1000)
+    for play, duration in out:
+        duration = duration 
+        data = struct.pack('<h', play * 15000)
+        for _ in range(duration):
+            obj.writeframesraw( data )
+    # for play, duration in out:
+    #     data = struct.pack("<h", 100)
+    #     data = struct.pack("<h", 100)
+    #     data = struct.pack("<h", 100)
+    #     data = struct.pack("<h", 100)
+    #     data = struct.pack("<h", 100)
+    #     obj.writeframesraw(data)
+    
+    obj.close()
